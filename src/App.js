@@ -3,38 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  /* 
-    Constructor is the first thing called when component is created
-    Anytime you want to do something with props or otherwise before 
-    component renders */
-  constructor(props) {
-    super(props);
-    console.log('constructor');
-  }
 
-  /* 
-    Fires just before component renders
-    Use when you want to change state without triggering a second render
-    Almost always do these things in constructor */
-  UNSAFE_componentWillMount() {
-    console.log('will mount');
-  }
-
-  /*   
-    We get access to this immediately after component renders
-    For things that need to happen after component renders like api calls */
-  componentDidMount() {
-    console.log('did mount');
-  }
-
-  state = {
-    toggle: true
-  }
-
-  toggle = () => {
-    this.setState({
-      toggle: !this.state.toggle
-    })
+  submit = () => {
+    console.log(this.text.value);
   }
 
   render() {
@@ -53,8 +24,10 @@ class App extends Component {
           >
             <Welcome text="Welcome to Using Props u n00b" />
           </a>
-          {this.state.toggle && <p>This should Show and Hide</p>}
-          <button onClick={this.toggle}>Show / Hide</button>
+          <span>
+            <input type='text' ref={(input) => this.text = input} />
+            <button onClick={this.submit}>Show Value</button>
+          </span>
         </header>
       </div>
     );
