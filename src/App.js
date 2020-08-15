@@ -3,6 +3,29 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  /* 
+    Constructor is the first thing called when component is created
+    Anytime you want to do something with props or otherwise before 
+    component renders */
+  constructor(props) {
+    super(props);
+    console.log('constructor');
+  }
+
+  /* 
+    Fires just before component renders
+    Use when you want to change state without triggering a second render
+    Almost always do these things in constructor */
+  UNSAFE_componentWillMount() {
+    console.log('will mount');
+  }
+
+  /*   
+    We get access to this immediately after component renders
+    For things that need to happen after component renders like api calls */
+  componentDidMount() {
+    console.log('did mount');
+  }
 
   state = {
     toggle: true
@@ -42,7 +65,7 @@ class Welcome extends Component {
   render() {
     const { text } = this.props;
     return (
-      <h1 className='App-title'>{this.props.text}</h1>
+      <h1 className='App-title'>{text}</h1>
     );
   }
 }
