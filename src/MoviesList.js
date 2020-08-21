@@ -1,33 +1,36 @@
-/* eslint-disable linebreak-style */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './App.css';
 import styled from 'styled-components';
 import Movie from './Movie';
 
-class MoviesList extends Component {
-    state = {
+class MoviesList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
       movies: [],
-    }
+    };
+  }
 
-    async componentDidMount() {
-      try {
-        const result = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=cbc6a4fcf31d82d2599fd3177bad7130&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1');
-        const movies = await result.json();
-        this.setState({
-          movies: movies.results,
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  async componentDidMount() {
+    try {
+      const result = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=cbc6a4fcf31d82d2599fd3177bad7130&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1');
+      const movies = await result.json();
+      this.setState({
+        movies: movies.results,
+      });
+    } catch (e) {
+      console.log(e);
     }
+  }
 
-    render() {
-      return (
-        <MovieGrid>
-          {this.state.movies.map((movie) => (<Movie key={movie.id} movie={movie} />))}
-        </MovieGrid>
-      );
-    }
+  render() {
+    const { movies } = this.state;
+    return (
+      <MovieGrid>
+        {movies.map((movie) => (<Movie key={movie.id} movie={movie} />))}
+      </MovieGrid>
+    );
+  }
 }
 
 export default MoviesList;
