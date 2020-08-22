@@ -18,7 +18,9 @@ export default Movie;
 
 Movie.propTypes = {
   movie: PropTypes.shape({
-    title: PropTypes.string.isRequired.isRequired,
+    title: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    poster_path: PropTypes.string.isRequired,
   }).isRequired,
 };
 
