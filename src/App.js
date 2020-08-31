@@ -15,6 +15,7 @@ import rootReducer from './rootReducer';
 import logo from './logo.svg';
 import MoviesList from './MoviesList';
 import MovieDetail from './MovieDetail';
+import Toggle from './Toggle';
 
 const store = createStore(
   rootReducer,
@@ -30,6 +31,7 @@ const App = () => (
           <Link to="/">
             <img src={logo} className="App-logo" alt="logo" />
           </Link>
+          <Toggle />
         </header>
         <Switch>
           <Route exact path="/" component={MoviesList} />
