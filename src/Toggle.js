@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
-import { toggleMessage } from './actions';
+import { toggleMessage, getMovies } from './actions';
 
 const Toggle = ({ messageVisibility, toggleMessage }) => (
   <div>
@@ -14,7 +14,12 @@ const Toggle = ({ messageVisibility, toggleMessage }) => (
       onClick={toggleMessage}
     >
       Toggle Me
-
+    </button>
+    <button
+      type="button"
+      onClick={getMovies}
+    >
+      Load Movies
     </button>
   </div>
 );
@@ -25,6 +30,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   toggleMessage,
+  getMovies,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toggle);

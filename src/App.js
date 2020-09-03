@@ -8,8 +8,10 @@ import {
 } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
 
 import logo from './logo.svg';
@@ -17,10 +19,12 @@ import MoviesList from './MoviesList';
 import MovieDetail from './MovieDetail';
 import Toggle from './Toggle';
 
+const middleware = [logger, thunk];
+
 const store = createStore(
   rootReducer,
   {},
-  composeWithDevTools(),
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 const App = () => (
