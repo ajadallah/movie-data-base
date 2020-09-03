@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { bindActionCreators } from 'redux';
 import { toggleMessage } from './actions';
 
-const Toggle = ({ messageVisibility, dispatch }) => (
+const Toggle = ({ messageVisibility, toggleMessage }) => (
   <div>
     {messageVisibility
       && <p>Redux action is toggled</p>}
     <button
       type="button"
-      onClick={() => dispatch(toggleMessage())}
+      onClick={toggleMessage}
     >
       Toggle Me
 
@@ -21,9 +22,14 @@ const Toggle = ({ messageVisibility, dispatch }) => (
 const mapStateToProps = (state) => ({
   messageVisibility: state.message.messageVisibility,
 });
-export default connect(mapStateToProps)(Toggle);
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  toggleMessage,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toggle);
 
 Toggle.propTypes = {
   messageVisibility: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  toggleMessage: PropTypes.func.isRequired,
 };
