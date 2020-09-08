@@ -1,30 +1,22 @@
 import React, { PureComponent } from 'react';
 import '../App.css';
 import styled from 'styled-components';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import Movie from './Movie';
 
-class MoviesList extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: [],
-    };
-  }
+import { getMovies } from './actions';
 
-  async componentDidMount() {
-    try {
-      const result = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=cbc6a4fcf31d82d2599fd3177bad7130&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1');
-      const movies = await result.json();
-      this.setState({
-        movies: movies.results,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+class MoviesList extends PureComponent {
+  componentDidMount() {
+    const { getMovies } = this.props;
+    getMovies();
   }
 
   render() {
-    const { movies } = this.state;
+    const { movies } = this.props;
     return (
       <MovieGrid>
         {movies.map((movie) => (<Movie key={movie.id} movie={movie} />))}
@@ -33,7 +25,20 @@ class MoviesList extends PureComponent {
   }
 }
 
-export default MoviesList;
+const mapStateToProps = (state) => ({
+  movies: state.movies.movies,
+});
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getMovies,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesList);
+
+MoviesList.propTypes = {
+  getMovies: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf.isRequired,
+};
 
 const MovieGrid = styled.div`
     display: grid;
