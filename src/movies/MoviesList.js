@@ -11,8 +11,10 @@ import { getMovies } from './actions';
 
 class MoviesList extends PureComponent {
   componentDidMount() {
-    const { getMovies, isLoaded } = this.props;
-    if (!isLoaded) { getMovies(); }
+    const { getMovies, isLoaded, moviesLoadedAt } = this.props;
+    const oneHour = 60 * 60 * 1000;
+    // Hit api if local storage is older than an hour old
+    if (!isLoaded || ((new Date()) - new Date(moviesLoadedAt)) > oneHour) { getMovies(); }
   }
 
   render() {
@@ -41,6 +43,7 @@ MoviesList.propTypes = {
   getMovies: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  moviesLoadedAt: PropTypes.number.isRequired,
 };
 
 const MovieGrid = styled.div`
