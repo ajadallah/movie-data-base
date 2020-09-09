@@ -2,32 +2,30 @@ import React, { Component } from 'react';
 import '../App.css';
 import styled from 'styled-components';
 import Overdrive from 'react-overdrive';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import PropTypes from 'prop-types';
 import { Poster } from './Movie';
+import { getMovie, resetMovie } from './actions';
 
 const POSTER_PATH = 'http://image.tmdb.org/t/p/w154';
 const BACKDROP_PATH = 'http://image.tmdb.org/t/p/w1280';
 class MovieDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movie: {},
-    };
+  // Pull id from match, which is part of react-router
+  componentDidMount() {
+    const { getMovie, match } = this.props;
+    getMovie(match.params.id);
   }
 
-  async componentDidMount() {
-    try {
-      const result = await fetch(`https://api.themoviedb.org/3/movie/${this.props.match.params.id}movie?api_key=cbc6a4fcf31d82d2599fd3177bad7130&language=en-US`);
-      const movie = await result.json();
-      this.setState({
-        movie,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  componentWillUnmount() {
+    const { resetMovie } = this.props;
+    resetMovie();
   }
 
   render() {
-    const { movie } = this.state;
+    const { movie } = this.props;
     return (
       <MovieWrapper backdrop={`${BACKDROP_PATH}${movie.backdrop_path}`}>
         <MovieInfo>
@@ -35,8 +33,8 @@ class MovieDetail extends Component {
             <Poster src={`${POSTER_PATH}${movie.poster_path}`} alt={movie.title} />
           </Overdrive>
           <div>
-            <h3>{movie.release_date}</h3>
             <h1>{movie.title}</h1>
+            <h3>{movie.release_date}</h3>
             <p>{movie.overview}</p>
           </div>
         </MovieInfo>
@@ -45,7 +43,24 @@ class MovieDetail extends Component {
   }
 }
 
-export default MovieDetail;
+const mapStateToProps = (state) => ({
+  movie: state.movies.movie,
+  isLoaded: state.movies.movieLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getMovie,
+  resetMovie,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);
+
+MovieDetail.propTypes = {
+  getMovie: PropTypes.func.isRequired,
+  movie: PropTypes.objectOf.isRequired,
+  match: PropTypes.func.isRequired,
+  resetMovie: PropTypes.func.isRequired,
+};
 
 const MovieWrapper = styled.div`
  position: relative;

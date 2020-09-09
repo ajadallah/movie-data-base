@@ -1,4 +1,6 @@
 export const GET_MOVIES = 'GET_MOVIES';
+export const GET_MOVIE = 'GET_MOVIE';
+export const RESET_MOVIE = 'RESET_MOVIE';
 
 export function getMovies() {
   return async function (dispatch) {
@@ -8,5 +10,22 @@ export function getMovies() {
       type: 'GET_MOVIES',
       data: movies.results,
     });
+  };
+}
+
+export function getMovie(id) {
+  return async function (dispatch) {
+    const result = await fetch(`https://api.themoviedb.org/3/movie/${id}movie?api_key=cbc6a4fcf31d82d2599fd3177bad7130&language=en-US`);
+    const movie = await result.json();
+    return dispatch({
+      type: 'GET_MOVIE',
+      data: movie,
+    });
+  };
+}
+
+export function resetMovie() {
+  return {
+    type: 'RESET_MOVIE',
   };
 }
